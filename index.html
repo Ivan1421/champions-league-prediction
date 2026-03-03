@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1800"> 
-    <title>UCL 2026 - Desktop Style</title>
+    <title>UCL 2026 - Final Odds Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -23,45 +23,38 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
-            /* Убираем скрытие скролла, чтобы он был доступен везде */
             overflow: auto; 
         }
 
-        header { text-align: center; padding: 30px 0; flex-shrink: 0; }
-        h1 { font-weight: 900; letter-spacing: 5px; margin: 0; font-size: 2rem; text-transform: uppercase; }
+        header { text-align: center; padding: 25px 0; flex-shrink: 0; }
+        h1 { font-weight: 900; letter-spacing: 5px; margin: 0; font-size: 1.8rem; text-transform: uppercase; }
 
-        /* Главная обертка для жесткой фиксации размеров */
         .master-wrapper {
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding: 50px;
-            min-width: 1750px; /* Силовая фиксация ширины как на ПК */
+            padding: 60px 40px;
+            min-width: 1750px;
         }
 
         .bracket-container {
             display: grid;
             grid-template-columns: 240px 200px 180px 450px 180px 200px 240px;
-            grid-template-rows: 50px repeat(8, 100px);
+            grid-template-rows: 50px repeat(8, 95px);
             column-gap: 30px;
             row-gap: 15px;
         }
 
         .stage-title {
-            font-size: 12px;
-            font-weight: 900;
-            color: var(--gold);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-align: center;
-            align-self: center;
-            border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+            font-size: 12px; font-weight: 900; color: var(--gold);
+            text-transform: uppercase; letter-spacing: 3px; text-align: center;
+            align-self: center; border-bottom: 1px solid rgba(197, 160, 89, 0.3);
             padding-bottom: 10px;
         }
 
-        .match-box { display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .match-box { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; }
 
-        /* Координаты сетки */
+        /* Позиции */
         .m1-8-1 { grid-column: 1; grid-row: 2 / 4; }
         .m1-8-2 { grid-column: 1; grid-row: 4 / 6; }
         .m1-8-3 { grid-column: 1; grid-row: 6 / 8; }
@@ -70,79 +63,51 @@
         .m1-8-6 { grid-column: 7; grid-row: 4 / 6; }
         .m1-8-7 { grid-column: 7; grid-row: 6 / 8; }
         .m1-8-8 { grid-column: 7; grid-row: 8 / 10; }
-
         .m1-4-1 { grid-column: 2; grid-row: 3 / 5; }
         .m1-4-2 { grid-column: 2; grid-row: 7 / 9; }
         .m1-4-3 { grid-column: 6; grid-row: 3 / 5; }
         .m1-4-4 { grid-column: 6; grid-row: 7 / 9; }
-
         .m1-2-1 { grid-column: 3; grid-row: 4 / 8; }
         .m1-2-2 { grid-column: 5; grid-row: 4 / 8; }
 
         .final-zone { 
             grid-column: 4; grid-row: 4 / 8; 
-            display: flex; flex-direction: column; 
-            justify-content: center; align-items: center;
+            display: flex; justify-content: center; align-items: center; position: relative;
         }
 
-        .matchup {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 12px;
-            width: 100%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        .cup-img { 
+            position: absolute; top: -75px; width: 190px; 
+            filter: drop-shadow(0 0 50px rgba(255,255,255,0.2)); z-index: 1;
         }
 
-        .team-slot {
-            height: 50px;
-            display: flex;
-            align-items: center;
-            padding: 0 15px;
-            cursor: pointer;
-            margin: 6px 0;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.03);
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .team-slot:hover { background: rgba(255, 255, 255, 0.1); transform: scale(1.02); }
-        .team-slot img { height: 40px; width: 40px; object-fit: contain; margin-right: 15px; }
-        .team-name { font-size: 13px; font-weight: 800; text-transform: uppercase; }
-
-        /* Финальные элементы */
-        .cup-img { width: 220px; margin-bottom: 25px; filter: drop-shadow(0 0 50px rgba(255,255,255,0.2)); }
-        .final-horiz { display: flex; align-items: center; gap: 30px; }
+        .final-horiz { display: flex; align-items: center; gap: 40px; z-index: 2; }
+        
         .final-slot {
-            width: 160px; height: 160px;
-            border: 4px dashed var(--gold);
-            border-radius: 50%;
+            width: 155px; height: 155px;
+            border: 4px dashed var(--gold); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; background: rgba(0,0,0,0.4);
-            transition: 0.5s;
+            cursor: pointer; background: rgba(0,0,0,0.5); transition: 0.4s;
         }
-        .final-slot img { width: 120px; height: 120px; object-fit: contain; }
+        .final-slot img { width: 115px; height: 115px; object-fit: contain; }
         .vs-divider { color: var(--gold); border: 2px solid var(--gold); padding: 15px; border-radius: 50%; background: var(--ucl-deep); font-weight: 900; font-size: 16px; }
 
         .winner-announcement { 
-            margin-top: 30px;
-            text-align: center; 
-            background: rgba(0,0,0,0.8);
-            padding: 20px 40px;
-            border-radius: 20px;
-            border: 2px solid var(--gold);
-            min-width: 320px;
+            position: absolute; bottom: -100px; text-align: center; 
+            background: rgba(0,0,0,0.9); padding: 15px 45px;
+            border-radius: 15px; border: 2px solid var(--gold);
+            min-width: 340px; box-shadow: 0 0 40px rgba(0,0,0,0.6);
         }
-        .winner-name { font-size: 22px; font-weight: 900; color: var(--gold); display: block; }
+        .winner-name { font-size: 20px; font-weight: 900; color: var(--gold); display: block; margin-bottom: 5px; }
+        .winner-chance { font-size: 13px; color: #00d4ff; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 
-        .advanced { animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .matchup { background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 12px; width: 100%; }
+        .team-slot { height: 50px; display: flex; align-items: center; padding: 0 15px; cursor: pointer; margin: 5px 0; border-radius: 8px; background: rgba(255,255,255,0.03); transition: 0.2s; }
+        .team-slot:hover { background: rgba(255, 255, 255, 0.1); }
+        .team-slot img { height: 38px; width: 38px; object-fit: contain; margin-right: 15px; }
+        .team-name { font-size: 12px; font-weight: 800; text-transform: uppercase; }
+
+        .advanced { animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         @keyframes pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-        /* Красивый скроллбар */
-        ::-webkit-scrollbar { width: 10px; height: 10px; }
-        ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 5px; }
-        ::-webkit-scrollbar-track { background: var(--ucl-deep); }
     </style>
 </head>
 <body>
@@ -150,7 +115,7 @@
     <header><h1>UCL 2026 PREDICTOR</h1></header>
 
     <div class="master-wrapper">
-        <div class="bracket-container" id="bracket">
+        <div class="bracket-container">
             <div class="stage-title">ROUND OF 16</div>
             <div class="stage-title">QUARTER-FINALS</div>
             <div class="stage-title">SEMI-FINALS</div>
@@ -178,7 +143,7 @@
 
             <div class="match-box m1-4-1"><div class="matchup" id="qf1" data-next="sf1" data-slot="0"><div class="team-slot"></div><div class="team-slot"></div></div></div>
             <div class="match-box m1-4-2"><div class="matchup" id="qf2" data-next="sf1" data-slot="1"><div class="team-slot"></div><div class="team-slot"></div></div></div>
-            <div class="match-box m1-2-1"><div class="matchup" id="sf1" data-next="final" data-slot="left"><div class="team-slot" style="height:70px"></div><div class="team-slot" style="height:70px"></div></div></div>
+            <div class="match-box m1-2-1"><div class="matchup" id="sf1" data-next="final" data-slot="left"><div class="team-slot" style="height:65px"></div><div class="team-slot" style="height:65px"></div></div></div>
 
             <div class="final-zone">
                 <img src="ucl_cup.png" class="cup-img">
@@ -189,10 +154,11 @@
                 </div>
                 <div class="winner-announcement" id="winner-box" style="visibility:hidden">
                     <span id="winner-text" class="winner-name"></span>
+                    <span id="winner-chance" class="winner-chance"></span>
                 </div>
             </div>
 
-            <div class="match-box m1-2-2"><div class="matchup" id="sf2" data-next="final" data-slot="right"><div class="team-slot" style="height:70px"></div><div class="team-slot" style="height:70px"></div></div></div>
+            <div class="match-box m1-2-2"><div class="matchup" id="sf2" data-next="final" data-slot="right"><div class="team-slot" style="height:65px"></div><div class="team-slot" style="height:65px"></div></div></div>
             <div class="match-box m1-4-3"><div class="matchup" id="qf3" data-next="sf2" data-slot="0"><div class="team-slot"></div><div class="team-slot"></div></div></div>
             <div class="match-box m1-4-4"><div class="matchup" id="qf4" data-next="sf2" data-slot="1"><div class="team-slot"></div><div class="team-slot"></div></div></div>
 
@@ -216,11 +182,13 @@
     </div>
 
     <script>
-        // Скроллим к центру при открытии на любом устройстве
-        window.scrollTo({
-            left: (document.body.scrollWidth - window.innerWidth) / 2,
-            behavior: 'auto'
-        });
+        // База данных вероятностей (обновляется только в финале)
+        const teamStats = {
+            'PSG': '4.6%', 'Chelsea': '6.9%', 'Liverpool': '12.8%', 'Galatasaray': '0.2%',
+            'Man City': '10.8%', 'Real Madrid': '2.8%', 'Bayern': '14.3%', 'Atalanta': '1.1%',
+            'Barcelona': '7.7%', 'Newcastle': '4.7%', 'Atletico': '2.0%', 'Tottenham': '1.2%',
+            'Sporting': '2.7%', 'Bodo/Glimt': '0.4%', 'Arsenal': '27.4%', 'Leverkusen': '0.5%'
+        };
 
         function advance(element, teamName) {
             const currentMatchup = element.closest('.matchup');
@@ -245,10 +213,25 @@
         function declareWinner(element) {
             const team = element.getAttribute('data-team');
             if(!team) return;
+
             const winBox = document.getElementById('winner-box');
             const winName = document.getElementById('winner-text');
+            const winChance = document.getElementById('winner-chance');
+
             winBox.style.visibility = "visible";
-            winName.innerText = (team === 'Man City') ? "Максим, это только твои фантазии!" : "ЧЕМПИОН: " + team.toUpperCase();
+            
+            // Проверка на Сити (по твоей просьбе)
+            if (team === 'Man City') {
+                winName.innerText = "Максим, это только твои фантазии!";
+                winName.style.color = "#ff4d4d";
+                winChance.innerText = "";
+            } else {
+                winName.innerText = "ЧЕМПИОН: " + team.toUpperCase();
+                winName.style.color = "var(--gold)";
+                // Вывод вероятности ТОЛЬКО ТУТ
+                winChance.innerText = "ВЕРОЯТНОСТЬ ТИТУЛА: " + (teamStats[team] || "0.1%");
+            }
+
             document.querySelectorAll('.final-slot').forEach(s => s.style.boxShadow = "none");
             element.style.boxShadow = "0 0 50px var(--gold)";
         }
