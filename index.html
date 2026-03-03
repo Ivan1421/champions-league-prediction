@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ЛЧ 2026 - Симулятор</title>
+    <title>ЛЧ 2026 - Perfect Alignment</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -26,24 +26,25 @@
             flex-direction: column;
         }
 
-        header { text-align: center; padding: 20px 0; }
-        h1 { font-weight: 900; letter-spacing: 5px; margin: 0; font-size: 24px; text-transform: uppercase; }
+        header { text-align: center; padding: 15px 0; flex-shrink: 0; }
+        h1 { font-weight: 900; letter-spacing: 5px; margin: 0; font-size: 22px; text-transform: uppercase; }
 
         .bracket-grid {
             display: grid;
-            grid-template-columns: 1.2fr 1.1fr 1fr 1.6fr 1fr 1.1fr 1.2fr;
-            gap: 25px;
-            width: 98vw;
-            max-width: 1800px;
-            margin: auto;
-            height: 85vh;
+            grid-template-columns: 1.2fr 1.1fr 1fr 1.8fr 1fr 1.1fr 1.2fr;
+            gap: 20px;
+            width: 100vw;
+            max-width: 1900px;
+            margin: 0 auto;
+            flex-grow: 1; /* Занимает всё оставшееся место */
             align-items: stretch;
+            padding-bottom: 20px;
         }
 
         .column { display: flex; flex-direction: column; height: 100%; }
         .col-1-8 { justify-content: space-around; }
-        .col-1-4 { justify-content: space-evenly; padding: 60px 0; }
-        .col-1-2 { justify-content: center; } 
+        .col-1-4 { justify-content: space-evenly; padding: 40px 0; }
+        .col-1-2 { justify-content: center; } /* Центровка полуфиналов */
 
         h3 { font-size: 10px; letter-spacing: 2px; color: var(--gold); text-align: center; margin-bottom: 5px; opacity: 0.7; text-transform: uppercase; }
 
@@ -52,40 +53,55 @@
             backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
             border-radius: 8px;
-            padding: 10px;
+            padding: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .team-slot {
-            height: 55px;
+            height: 50px;
             display: flex;
             align-items: center;
-            padding: 0 15px;
+            padding: 0 12px;
             cursor: pointer;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            margin: 5px 0;
+            transition: 0.2s;
+            margin: 4px 0;
             border-radius: 4px;
         }
 
-        .team-slot:hover { background: rgba(255, 255, 255, 0.1); transform: scale(1.02); }
-        .team-slot img { height: 38px; width: 38px; object-fit: contain; margin-right: 15px; }
-        .team-name { font-size: 12px; font-weight: 700; text-transform: uppercase; }
+        .team-slot:hover { background: rgba(255, 255, 255, 0.1); }
+        .team-slot img { height: 34px; width: 34px; object-fit: contain; margin-right: 12px; }
+        .team-name { font-size: 11px; font-weight: 700; text-transform: uppercase; }
 
-        /* ФИНАЛЬНЫЙ БЛОК */
+        /* ЦЕНТРАЛЬНАЯ КОЛОНКА (ФИНАЛ) */
         .final-column {
             display: flex;
             flex-direction: column;
+            justify-content: center; /* Центрирует содержимое по вертикали */
             align-items: center;
-            justify-content: center;
+            position: relative;
         }
 
-        .cup-img { width: 210px; margin-bottom: 15px; transition: 0.5s; filter: drop-shadow(0 0 20px rgba(255,255,255,0.1)); }
+        .cup-container {
+            position: absolute;
+            top: 15%; /* Кубок висит выше слотов */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none; /* Чтобы кубок не мешал кликать */
+        }
+
+        .cup-img { 
+            width: 180px; 
+            filter: drop-shadow(0 0 30px rgba(255,255,255,0.15));
+            /* Удален переход transform, кубок статичен */
+        }
 
         .final-horiz-container {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 30px;
+            gap: 40px;
+            z-index: 2;
         }
 
         .final-slot {
@@ -98,22 +114,25 @@
             justify-content: center;
             border-radius: 50%;
             cursor: pointer;
-            transition: 0.4s;
+            transition: 0.3s;
         }
 
-        .final-slot:hover { border-color: var(--ucl-accent); transform: scale(1.05); }
+        .final-slot:hover { border-color: var(--ucl-accent); background: rgba(0, 51, 255, 0.05); }
         .final-slot img { width: 95px; }
 
-        .vs-divider { font-weight: 900; color: var(--gold); border: 2px solid var(--gold); padding: 10px; border-radius: 50%; background: var(--ucl-deep); font-size: 14px; }
+        .vs-divider { font-weight: 900; color: var(--gold); border: 2px solid var(--gold); padding: 12px; border-radius: 50%; background: var(--ucl-deep); font-size: 14px; box-shadow: 0 0 20px rgba(197, 160, 89, 0.2); }
 
+        /* ИНФОРМАЦИЯ О ПОБЕДИТЕЛЕ */
         .winner-announcement { 
-            margin-top: 25px; 
+            position: absolute;
+            bottom: 10%; /* Текст внизу центральной колонки */
             text-align: center; 
-            min-height: 90px; 
+            min-height: 80px; 
+            width: 100%;
         }
 
-        .winner-name { font-size: 26px; font-weight: 900; color: var(--gold); display: block; letter-spacing: 1px; }
-        .final-prob { font-size: 15px; color: var(--ucl-accent); margin-top: 8px; font-weight: 600; }
+        .winner-name { font-size: 24px; font-weight: 900; color: var(--gold); display: block; letter-spacing: 1px; text-shadow: 0 0 15px rgba(197, 160, 89, 0.4); }
+        .final-prob { font-size: 14px; color: var(--ucl-accent); margin-top: 5px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
         .easter-egg { color: #ff4d4d; animation: shake 0.3s infinite; }
         @keyframes shake { 0% { transform: translateX(2px); } 50% { transform: translateX(-2px); } }
@@ -124,7 +143,7 @@
 </head>
 <body>
 
-    <header><h1>Путь к финалу ЛЧ 2026</h1></header>
+    <header><h1>ПУТЬ К ФИНАЛУ ЛЧ 2026</h1></header>
 
     <div class="bracket-grid">
         <div class="column col-1-8">
@@ -159,12 +178,16 @@
         </div>
 
         <div class="final-column">
-            <img src="ucl_cup.png" class="cup-img" alt="Кубок ЛЧ">
+            <div class="cup-container">
+                <img src="ucl_cup.png" class="cup-img" alt="Кубок">
+            </div>
+            
             <div class="final-horiz-container">
                 <div class="final-slot" id="final-left" onclick="declareWinner(this)"></div>
                 <div class="vs-divider">VS</div>
                 <div class="final-slot" id="final-right" onclick="declareWinner(this)"></div>
             </div>
+
             <div class="winner-announcement" id="winner-box">
                 <span id="winner-text" class="winner-name"></span>
                 <div id="winner-stats" class="final-prob"></div>
@@ -216,7 +239,6 @@
                 finalSlot.innerHTML = `<img src="${imgTag.src}" class="advanced">`;
                 finalSlot.setAttribute('data-team', teamName);
                 finalSlot.setAttribute('data-prob', probability);
-                // Очистка победителя при смене финалиста
                 document.getElementById('winner-text').innerText = "";
                 document.getElementById('winner-stats').innerText = "";
             } else {
@@ -242,12 +264,12 @@
             } else {
                 winName.innerText = "ЧЕМПИОН: " + team.toUpperCase();
                 winName.className = "winner-name";
-                winStats.innerText = "Вероятность победы: " + prob;
+                winStats.innerText = "ВЕРОЯТНОСТЬ ПОБЕДЫ: " + prob;
             }
             
             document.querySelectorAll('.final-slot').forEach(s => s.style.boxShadow = "none");
             element.style.boxShadow = "0 0 50px var(--gold)";
-            document.querySelector('.cup-img').style.transform = "scale(1.1) rotate(-5deg)";
+            // Кубок больше не двигается (строка с transform удалена)
         }
     </script>
 </body>
